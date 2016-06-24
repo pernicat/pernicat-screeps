@@ -36,23 +36,25 @@ module.exports.loop = function () {
             let quantityCarry = Math.floor(((mySpawn.energy - buffer) * .25) / 50);
             let quantityMove = Math.floor(((mySpawn.energy - buffer) * .25) / 50);
             
+            //console.log(quantityWork, quantityCarry, quantityMove);
+            
             for(let i = 0; i < quantityWork; i++) {
                 bodyWork.push(WORK);
             }
             
             for(let i = 0; i < quantityCarry; i++) {
-                bodyCarry.push(WORK);
+                bodyCarry.push(CARRY);
             }
             
             for(let i = 0; i < quantityMove; i++) {
-                bodyMove.push(WORK);
+                bodyMove.push(MOVE);
             }
             
             let body = bodyWork.concat(bodyCarry, bodyMove);
             
-            console.log(body);
+            //console.log(body);
             
-           // var newCreep = Game.spawns.Spawn1.createCreep(body, undefined, {role: role});
+            var newCreep = Game.spawns.Spawn1.createCreep(body, undefined, {role: role});
         }
     }
 
