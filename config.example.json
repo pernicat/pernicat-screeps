@@ -1,0 +1,10 @@
+{
+  "screeps": {
+    "options": {
+      "email": "YOUR_EMAIL",
+      "password": "YOUR_PASSWORD",
+      "branch": "default",
+      "ptr": false
+    }
+  }
+}
