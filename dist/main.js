@@ -1,6 +1,8 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var taskManager = require('task.manager');
+var taskHavester = require('task.harvester');
 
 
 module.exports.loop = function () {
@@ -10,7 +12,7 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
-    
+
     let mySpawn = Game.spawns.Spawn1;
 
     var checkCreeps = function (role, count) {
@@ -19,49 +21,50 @@ module.exports.loop = function () {
             //console.log('not enough energy');
             return;
         }
-        
-        
+
+
         let creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
 
         if (creeps.length < count) {
             console.log('creating new creep', role);
-            
+
             let bodyWork = [];
             let bodyCarry = [];
             let bodyMove = [];
-            
+
             let buffer = 50;
-            
+
             let quantityWork = Math.floor(((mySpawn.energy - buffer) * .5) / 100);
             let quantityCarry = Math.floor(((mySpawn.energy - buffer) * .25) / 50);
             let quantityMove = Math.floor(((mySpawn.energy - buffer) * .25) / 50);
-            
+
             //console.log(quantityWork, quantityCarry, quantityMove);
-            
+
             for(let i = 0; i < quantityWork; i++) {
                 bodyWork.push(WORK);
             }
-            
+
             for(let i = 0; i < quantityCarry; i++) {
                 bodyCarry.push(CARRY);
             }
-            
+
             for(let i = 0; i < quantityMove; i++) {
                 bodyMove.push(MOVE);
             }
-            
+
             let body = bodyWork.concat(bodyCarry, bodyMove);
-            
+
             //console.log(body);
-            
+
             var newCreep = Game.spawns.Spawn1.createCreep(body, undefined, {role: role});
         }
     }
 
-    
+
     checkCreeps('harvester', 1);
     checkCreeps('upgrader', 3);
     checkCreeps('builder', 1);
+    checkCreeps('worker', 1);
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -73,6 +76,19 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
+        }
+
+        if('worker' == creep.memory.role) {
+          //console.log('checking worker');
+          if(null == creep.memory.task) {
+            //console.log('dispatching');
+            taskManager.dispatch(creep);
+          }
+
+          if ('harvester' == creep.memory.task) {
+            console.log('harvesting');
+            taskHavester.run(creep);
+          }
         }
     }
 }

@@ -8,6 +8,11 @@ module.exports = {
 
   dispatch: function (creep) {
     // TODO assign the most important task.
+    let task = 'harvester';
+
+    creep.memory.task = task;
+    creep.say(task);
+    return task;
   },
 
   getWorkers: function () {

@@ -14,5 +14,9 @@
     "screeps"
   ],
   "author": "Tony Pernicano",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-screeps": "^1.2.1"
+  }
 }
