@@ -1,8 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-var taskManager = require('task.manager');
-var taskHavester = require('task.harvester');
+var roleWorker = require('role.worker')
 
 
 module.exports.loop = function () {
@@ -61,10 +60,10 @@ module.exports.loop = function () {
     }
 
 
-    checkCreeps('harvester', 1);
-    checkCreeps('upgrader', 3);
-    checkCreeps('builder', 1);
-    checkCreeps('worker', 1);
+    //checkCreeps('harvester', 1);
+    //checkCreeps('upgrader', 3);
+    //checkCreeps('builder', 1);
+    checkCreeps('worker', 4);
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -80,15 +79,7 @@ module.exports.loop = function () {
 
         if('worker' == creep.memory.role) {
           //console.log('checking worker');
-          if(null == creep.memory.task) {
-            //console.log('dispatching');
-            taskManager.dispatch(creep);
-          }
-
-          if ('harvester' == creep.memory.task) {
-            console.log('harvesting');
-            taskHavester.run(creep);
-          }
+          roleWorker.run(creep);
         }
     }
 }
